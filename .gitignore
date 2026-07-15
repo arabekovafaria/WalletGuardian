@@ -1,0 +1,19 @@
+# Python
+__pycache__/
+*.py[cod]
+
+# Virtual environment
+.venv/
+venv/
+
+# Environment variables
+.env
+
+# Database
+wallets.db
+
+# Local files
+chat_id.txt
+
+# macOS
+.DS_Store
