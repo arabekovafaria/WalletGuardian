@@ -2,9 +2,6 @@ from bot.bot import app
 from services.tracker import start_tracker
 
 
-
-
-
 from telegram import BotCommand
 
 async def post_init(application):
