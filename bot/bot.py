@@ -132,6 +132,7 @@ async def balance(update: Update, context: ContextTypes.DEFAULT_TYPE):
         f"💎 Balance: {balance} ETH"
     )
 async def last_transaction(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    print("LASTTX COMMAND")
     if len(context.args) == 0:
         await update.message.reply_text(
             "Usage:\n/lasttx wallet_address"
