@@ -14,6 +14,7 @@ async def post_init(application):
         BotCommand("list", "Show wallets"),
         BotCommand("balance", "Check balance"),
         BotCommand("removewallet", "Remove wallet"),
+        BotCommand("lasttx", "Show last transaction"),
     ])
 app.post_init = post_init
 
