@@ -47,6 +47,8 @@ def get_transactions(address):
     )
 
     response = requests.get(url)
+    print(response.status_code)
+    print(response.text)
     data = response.json()
 
     if data["status"] != "1":
