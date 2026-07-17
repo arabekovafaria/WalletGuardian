@@ -123,9 +123,14 @@ async def balance(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     address = context.args[0]
 
-    data = get_balance(address)
+    balance = get_balance(address)
 
-    await update.message.reply_text(str(data))
+    await update.message.reply_text(
+        f"💰 Wallet Balance\n\n"
+        f"🌐 Network: ETH\n"
+        f"📍 Address:\n{address}\n\n"
+        f"💎 Balance: {balance} ETH"
+    )
 async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(
         "🤖 WalletGuardian\n\n"
