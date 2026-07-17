@@ -9,7 +9,7 @@ from database.database import (
     get_wallets,
     remove_wallet,
 )
-from blockchain.ethereum import get_balance
+from blockchain.ethereum import get_balance, get_transactions
 load_dotenv()
 
 TOKEN = os.getenv("BOT_TOKEN")
@@ -131,6 +131,28 @@ async def balance(update: Update, context: ContextTypes.DEFAULT_TYPE):
         f"📍 Address:\n{address}\n\n"
         f"💎 Balance: {balance} ETH"
     )
+async def last_transaction(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    if len(context.args) == 0:
+        await update.message.reply_text(
+            "Usage:\n/lasttx wallet_address"
+        )
+        return
+
+        address = context.args[0]
+
+        tx = get_transactions(address)
+
+        if tx is None:
+            await update.message.reply_text("No transactions found.")
+            return
+
+        await update.message.reply_text(
+            f"📦 Last Transaction\n\n"
+            f"🔗 Hash:\n{tx['hash']}\n\n"
+            f"📤 From:\n{tx['from']}\n\n"
+            f"📥 To:\n{tx['to']}\n\n"
+            f"⛽ Gas Used: {tx['gasUsed']}"
+        )
 async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(
         "🤖 WalletGuardian\n\n"
@@ -141,6 +163,7 @@ async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "/list - Show wallets\n"
         "/balance <address> - Check wallet balance\n"
         "/removewallet <address> - Remove wallet\n" 
+        "/lasttx <address> - Show last transaction"  
     )
           
 
@@ -151,3 +174,4 @@ app.add_handler(CommandHandler("addwallet", add_wallet_command))
 app.add_handler(CommandHandler("list", list_wallets))
 app.add_handler(CommandHandler("balance", balance))
 app.add_handler(CommandHandler("removewallet", remove_wallet_command))
+app.add_handler(CommandHandler("lasttx", last_transaction))

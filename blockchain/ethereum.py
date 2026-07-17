@@ -47,4 +47,14 @@ def get_transactions(address):
     )
 
     response = requests.get(url)
-    return response.json()
+    data = response.json()
+
+    if data["status"] != "1":
+        return None
+
+    transactions = data["result"]
+
+    if len(transactions) == 0:
+        return None
+
+    return transactions[0]
