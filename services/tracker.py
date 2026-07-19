@@ -8,6 +8,7 @@ last_transactions = {}
 
 def check_wallets():
     wallets = get_wallets()
+    print(wallets)
 
     if not wallets:
         print("No wallets found.")
@@ -16,6 +17,8 @@ def check_wallets():
     print("\nChecking wallets...\n")
 
     for wallet in wallets:
+        chain, wallet = wallet
+
         latest = get_transactions(wallet)
 
         print("=" * 60)
