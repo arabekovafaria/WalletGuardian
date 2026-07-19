@@ -122,7 +122,9 @@ async def balance(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return
 
     address = context.args[0]
-
+    print(address)
+    tx = get_transactions(address)
+    print(tx)
     balance = get_balance(address)
 
     await update.message.reply_text(
