@@ -16,16 +16,12 @@ def check_wallets():
     print("\nChecking wallets...\n")
 
     for wallet in wallets:
-        transactions = get_transactions(wallet)
+        latest = get_transactions(wallet)
 
         print("=" * 60)
         print(f"Wallet: {wallet}")
 
-        if transactions["status"] == "1":
-            print(f"Transactions found: {len(transactions['result'])}")
-
-            if len(transactions["result"]) > 0:
-                latest = transactions["result"][0]
+        if latest is not None:
                 current_hash = latest["hash"]
 
                 if wallet not in last_transactions:

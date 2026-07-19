@@ -1,11 +1,7 @@
-from blockchain.transactions import get_transactions
-from database.database import get_wallets
+from blockchain.ethereum import get_transactions
 
-wallets = get_wallets()
+address = "0xde0B295669a9FD93d5F28D9Ec85E40f4cb697BAe"
 
-if not wallets:
-    print("No wallets.")
-else:
-    data = get_transactions(wallets[0])
+tx = get_transactions(address)
 
-    print(data)
+print(tx)

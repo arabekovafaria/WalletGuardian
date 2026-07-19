@@ -143,11 +143,9 @@ async def last_transaction(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
         tx = get_transactions(address)
 
-        if tx["status"] != "1" or len(tx["result"]) == 0:
+        if tx is None:
             await update.message.reply_text("No transactions found.")
             return
-
-        tx = tx["result"][0]
 
         await update.message.reply_text(
             f"📦 Last Transaction\n\n"
