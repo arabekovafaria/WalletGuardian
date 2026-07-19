@@ -3,6 +3,7 @@ import sqlite3
 import os
 
 DB_FILE = "wallets.db"
+print("DB:", os.path.abspath(DB_FILE))
 def init_db():
     conn = sqlite3.connect(DB_FILE)
     cursor = conn.cursor()
