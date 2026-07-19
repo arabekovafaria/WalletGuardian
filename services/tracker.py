@@ -1,3 +1,4 @@
+import os
 import time
 import asyncio
 import threading
@@ -8,7 +9,9 @@ last_transactions = {}
 
 def check_wallets():
     wallets = get_wallets()
+    print(os.getcwd())
     print(wallets)
+
 
     if not wallets:
         print("No wallets found.")
