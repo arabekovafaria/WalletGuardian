@@ -3,6 +3,7 @@ from telegram import Bot
 from telegram.ext import Application, CommandHandler, ContextTypes
 import os
 from dotenv import load_dotenv
+from datetime import datetime
 
 from database.database import (
     add_wallet,
@@ -134,9 +135,6 @@ async def balance(update: Update, context: ContextTypes.DEFAULT_TYPE):
         f"💎 Balance: {balance} ETH"
     )
 async def last_transaction(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    print(context.args)
-    print("LASTTX COMMAND")
-
     if len(context.args) == 0:
         await update.message.reply_text(
             "Usage:\n/lasttx wallet_address"
@@ -151,13 +149,22 @@ async def last_transaction(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text("No transactions found.")
         return
 
+    value = int(tx["value"]) / 10**18
+
+    time = datetime.utcfromtimestamp(
+        int(tx["timeStamp"])
+    ).strftime("%Y-%m-%d %H:%M UTC")
+
     await update.message.reply_text(
         f"📦 Last Transaction\n\n"
-        f"🔗 Hash:\n{tx['hash']}\n\n"
-        f"📤 From:\n{tx['from']}\n\n"
-        f"📥 To:\n{tx['to']}\n\n"
-        f"⛽ Gas Used: {tx['gasUsed']}"
+        f"🔗 Hash\n{tx['hash']}\n\n"
+        f"📤 From\n{tx['from']}\n\n"
+        f"📥 To\n{tx['to']}\n\n"
+        f"💰 Value\n{value} ETH\n\n"
+        f"⛽ Gas Used\n{tx['gasUsed']}\n\n"
+        f"🕒 Time\n{time}"
     )
+
 async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(
         "🤖 WalletGuardian\n\n"
