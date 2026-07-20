@@ -136,27 +136,28 @@ async def balance(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def last_transaction(update: Update, context: ContextTypes.DEFAULT_TYPE):
     print(context.args)
     print("LASTTX COMMAND")
+
     if len(context.args) == 0:
         await update.message.reply_text(
             "Usage:\n/lasttx wallet_address"
         )
         return
 
-        address = context.args[0]
+    address = context.args[0]
 
-        tx = get_transactions(address)
+    tx = get_transactions(address)
 
-        if tx is None:
-            await update.message.reply_text("No transactions found.")
-            return
+    if tx is None:
+        await update.message.reply_text("No transactions found.")
+        return
 
-        await update.message.reply_text(
-            f"📦 Last Transaction\n\n"
-            f"🔗 Hash:\n{tx['hash']}\n\n"
-            f"📤 From:\n{tx['from']}\n\n"
-            f"📥 To:\n{tx['to']}\n\n"
-            f"⛽ Gas Used: {tx['gasUsed']}"
-        )
+    await update.message.reply_text(
+        f"📦 Last Transaction\n\n"
+        f"🔗 Hash:\n{tx['hash']}\n\n"
+        f"📤 From:\n{tx['from']}\n\n"
+        f"📥 To:\n{tx['to']}\n\n"
+        f"⛽ Gas Used: {tx['gasUsed']}"
+    )
 async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(
         "🤖 WalletGuardian\n\n"
