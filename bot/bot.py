@@ -16,17 +16,14 @@ load_dotenv()
 TOKEN = os.getenv("BOT_TOKEN")
 
 telegram_bot = Bot(token=TOKEN)
-async def send_message(chat_id, text):
-    print(f"Sending message to {chat_id}")
-    await app.bot.send_message(
-    chat_id=chat_id,
-    text=text,
-    parse_mode="HTML"
-)
-    print("Message sent!")
 
+async def send_message(chat_id, text):
+    await telegram_bot.send_message(
+        chat_id=chat_id,
+        text=text,
+        parse_mode="HTML"
+    )
 app = Application.builder().token(TOKEN).build()
-BOT_LOOP = None
 
 async def add_wallet_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if len(context.args) == 0:
@@ -45,17 +42,10 @@ async def add_wallet_command(update: Update, context: ContextTypes.DEFAULT_TYPE)
 
     wallet = context.args[1]
 
-    print(chain)
-
-    print(wallet)
 
     chat_id = update.effective_chat.id
 
-    add_wallet(chain, wallet)
-
-    with open("chat_id.txt", "w") as f:
-
-        f.write(str(chat_id))
+    add_wallet(chain, wallet, chat_id)
 
     await update.message.reply_text(
 
@@ -63,8 +53,6 @@ async def add_wallet_command(update: Update, context: ContextTypes.DEFAULT_TYPE)
 
     )
 async def remove_wallet_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    print("REMOVE COMMAND")
-    print(context.args)
 
     if len(context.args) == 0:
         await update.message.reply_text(
@@ -76,7 +64,6 @@ async def remove_wallet_command(update: Update, context: ContextTypes.DEFAULT_TY
 
     remove_wallet(wallet)
 
-    print(get_wallets())
 
     await update.message.reply_text(
     f"🗑 Wallet removed:\n{wallet}"
@@ -109,7 +96,7 @@ async def list_wallets(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    print("START COMMAND")
+    
 
     await update.message.reply_text(
         "WalletGuardian is running 🚀"
@@ -123,9 +110,7 @@ async def balance(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return
 
     address = context.args[0]
-    print(address)
     tx = get_transactions(address)
-    print(tx)
     balance = get_balance(address)
 
     await update.message.reply_text(

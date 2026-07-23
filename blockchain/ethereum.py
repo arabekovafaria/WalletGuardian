@@ -24,7 +24,6 @@ def get_balance(address):
 
     response = requests.get(url)
     data = response.json()
-    print(data)
     if data["status"] == "1":
         wei = int(data["result"])
         eth = wei / 10**18
@@ -47,8 +46,6 @@ def get_transactions(address):
     )
 
     response = requests.get(url)
-    print(response.status_code)
-    print(response.text)
     data = response.json()
 
     if data["status"] != "1":

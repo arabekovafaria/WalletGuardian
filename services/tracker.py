@@ -1,26 +1,21 @@
-import os
-import time
 import asyncio
-import threading
 from database.database import get_wallets
 from blockchain.transactions import get_transactions
 from bot.bot import send_message
+from datetime import datetime
 last_transactions = {}
 
 def check_wallets():
     wallets = get_wallets()
-    print(os.getcwd())
-    print(wallets)
 
 
     if not wallets:
         print("No wallets found.")
         return
 
-    print("\nChecking wallets...\n")
 
-    for wallet in wallets:
-        chain, wallet = wallet
+    for wallet_data in wallets:
+        chain, wallet, chat_id = wallet_data
 
         latest = get_transactions(wallet)
 
@@ -42,18 +37,21 @@ def check_wallets():
 
                     
 
+                    value = int(latest["value"]) / 10**18
 
-                    with open("chat_id.txt", "r") as f:
-                        chat_id = f.read().strip()
+                    tx_time = datetime.utcfromtimestamp(
+                        int(latest["timeStamp"])
+                    ).strftime("%Y-%m-%d %H:%M UTC")
 
-                        message = (
-                            f"🚨 <b>New Transaction Detected</b>\n\n"
-                            f"👛 <b>Wallet</b>\n<code>{wallet}</code>\n\n"
-                            f"💰 <b>Value</b>\n{latest['value']}\n\n"
-                            f"📤 <b>From</b>\n<code>{latest['from']}</code>\n\n"
-                            f"📥 <b>To</b>\n<code>{latest['to']}</code>\n\n"
-                            f"🔗 <b>Hash</b>\n<code>{latest['hash']}</code>"
-                        )
+                    message = (
+                        f"🚨 <b>New Transaction Detected</b>\n\n"
+                        f"👛 <b>Wallet</b>\n<code>{wallet}</code>\n\n"
+                        f"💰 <b>Value</b>\n{value:.8f} ETH\n\n"
+                        f"📤 <b>From</b>\n<code>{latest['from']}</code>\n\n"
+                        f"📥 <b>To</b>\n<code>{latest['to']}</code>\n\n"
+                        f"🔗 <b>Hash</b>\n<code>{latest['hash']}</code>\n\n"
+                        f"🕒 <b>Time</b>\n{tx_time}"
+                    )
 
                     asyncio.create_task(send_message(chat_id, message))
                 else:
@@ -77,5 +75,3 @@ async def tracker_loop():
 def start_tracker(app):
     app.create_task(tracker_loop())
     print("Wallet tracker started.")
-
-    
