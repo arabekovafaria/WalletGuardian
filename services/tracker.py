@@ -17,7 +17,7 @@ def check_wallets():
     for wallet_data in wallets:
         chain, wallet, chat_id = wallet_data
 
-        latest = get_transactions(wallet)
+        latest = get_transactions(chain, wallet)
 
         print("=" * 60)
         print(f"Wallet: {wallet}")
