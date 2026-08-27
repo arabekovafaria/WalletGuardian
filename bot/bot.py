@@ -1,3 +1,4 @@
+from services.tracker import start_tracker
 from telegram import Update
 from telegram import Bot
 from telegram.ext import Application, CommandHandler, ContextTypes
@@ -172,3 +173,8 @@ app.add_handler(CommandHandler("list", list_wallets))
 app.add_handler(CommandHandler("balance", balance))
 app.add_handler(CommandHandler("removewallet", remove_wallet_command))
 app.add_handler(CommandHandler("lasttx", last_transaction))
+app.add_handler(CommandHandler("lasttx", last_transaction))
+
+start_tracker(app)
+
+app.run_polling()
