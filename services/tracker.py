@@ -42,7 +42,7 @@ async def check_wallets(bot):
                     f"🔗 <b>Hash:</b>\n<code>{latest['hash']}</code>\n\n"
                     f"🕐 <b>Time:</b>\n{latest.get('timeStamp', '')}"
                 )
-
+                print(f"SENDING TO CHAT: {chat_id}")
                 await bot.send_message(
                     chat_id=chat_id,
                     text=message,
@@ -65,8 +65,8 @@ async def tracker_loop(bot):
         await asyncio.sleep(30)
 
 
-def start_tracker_job(context):
-    context.application.create_task(tracker_loop(context.bot))
+async def start_tracker_job(context):
+    await tracker_loop(context.bot)
 
 
 def start_tracker(app):
